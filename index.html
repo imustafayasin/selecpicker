@@ -11,19 +11,20 @@
 
 <body>
     <select name="" id="">
-        <option value="1">Product 1</option>
-        <option value="2">Product 2</option>
-        <option value="3">Product 3</option>
-        <option value="4">Product 4</option>
-        <option value="5">Product 5</option>
-        <option value="6">Product 6</option>
-        <option value="7">Another 7</option>
+        <option value="reading">123</option>
+        <optgroup label="Hobbies">
+            <option value="code">Coding</option>
+            <option value="reading">Development</option>
+        </optgroup>
+        <optgroup label="Hobbies">
+            <option value="code">Coding</option>
+            <option value="reading">Development</option>
+        </optgroup>
     </select>
 </body>
 <script src="selectpicker.js"></script>
 <script>
-    const select = document.querySelector('select')
-    select.selectpicker()
+    document.querySelector('select').selectpicker()
 </script>
 
 </html>

@@ -4,6 +4,7 @@ html,body{
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgba(255, 255, 255, 0.473);
     gap: 10px;
     font-family: "Arial",sans-serif;
 }
@@ -19,15 +20,34 @@ position: relative;
     background-color: #fff;
     text-align: left;
     background: #FFFFFF;
-/* Gray/300 */
+    border: 1px solid #D0D5DD;
+    padding: 5px 10px;
+    box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+}
+.selectpicker button:hover{
+    background-color:#d0d5ddd3;
+}
 
-border: 1px solid #D0D5DD;
-padding: 5px 10px;
-/* Shadow/xs */
+.selectpicker button::after{
+    content: '';
+    position: absolute;
+    right: 7px;
+    width:0px;
+    height: 0px;
+    top:45%;
+    vertical-align: middle;
+    height: 4px;
+    border:4px solid transparent;
+    border-radius: 2px;
+    border-top-color: #222;
 
-box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-border-radius: 4px;
-}.selectpicker .options{
+}
+
+
+.selectpicker .options{
     background-color: #fff;
     border:1px solid #D0D5DD;
     position: absolute;
@@ -41,18 +61,28 @@ border-radius: 4px;
     opacity: 0;
     visibility: hidden;
 }
-.selectpicker .options .select-option{
-    font-size: 13px;
+.selectpicker .options option{
+    font-size: 12px;
     padding: 5px;
     cursor: pointer;
 }
-.selectpicker .options .select-option:not(:last-child){
+.selectpicker .options option:not(:last-child){
     /* border-bottom: 1px solid #D0D5DD; */
 }
-.selectpicker .options .select-option:hover{
+.selectpicker .options option:not(.selected):hover{
     background-color:#d0d5dd2e;
 }
-.select-option.selected{
+option.selected{
     background-color: #24a0ed;
     color: #fff;
+}
+
+.optgroup::before{
+    content:attr(label);
+    font-size: 9px;
+    padding-left: 10px;
+}
+
+body .optgroup option{
+    padding-left:15px !important;
 }
