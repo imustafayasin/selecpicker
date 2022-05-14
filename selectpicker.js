@@ -28,7 +28,7 @@ var selectpicker_obj = {
         selectpicker_wrapper.appendChild(options)
         _element.after(selectpicker_wrapper)
 
-        this.selectOption(options.querySelectorAll('option'), _element, this.hasMultiple(_element), this.maxValue(_element))
+        this.selectOption(options.querySelectorAll('option'), _element, this.hasMultiple(_element), this.maxValue(_element), this.showCount(_element))
         document.addEventListener('click', this.showOrHideDropDown.bind(this, this.hasMultiple(_element), this.addSearch(_element)))
     },
     formatHTML: function (html) {
@@ -43,6 +43,7 @@ var selectpicker_obj = {
     },
     hasMultiple: (e) => e.hasAttribute("multiple"),
     maxValue: (e) => e.getAttribute("max"),
+    showCount: (e) => e.getAttribute("show-selected-count"),
     addSearch: function (e) {
         if (!e.hasAttribute("search")) return false
         searchInput.classList.add(SEARCH)
@@ -59,21 +60,21 @@ var selectpicker_obj = {
         options.querySelectorAll('option').forEach(o => { if (!o.innerText.toLowerCase().includes(e.target.value.toLowerCase())) o.setAttribute("hidden", "") })
         console.log(options.querySelectorAll('option'), e.target.value)
     },
-    selectOption(_options, _element, isMultiple, maxValue) {
+    selectOption(_options, _element, isMultiple, maxValue, showCount) {
         if (!_options) return
         [..._options].forEach(item => item.addEventListener('click', function () {
             _element.value = this.value
             if (isMultiple) {
 
                 if (maxValue && [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].length >= Number(maxValue)) {
-                    if ([...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].includes(this)) {
-                        this.classList.toggle(SELECTED_MULTIPLE);
-                        button.textContent = [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].map(o => o.textContent).join(' + ') || BUTTON_TEXT
-                    }
+                    if ([...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].includes(this)) this.classList.toggle(SELECTED_MULTIPLE);
+                    let count = [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].length;
+                    button.textContent = eval(showCount) && count != 0 ? `${count} selected` : [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].map(o => o.textContent).join(' + ') || BUTTON_TEXT
                     return
                 }
                 this.classList.toggle(SELECTED_MULTIPLE);
-                button.textContent = [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].map(o => o.textContent).join(' + ') || BUTTON_TEXT
+                let count = [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].length;
+                button.textContent = eval(showCount) && count != 0 ? `${count} selected` : [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].map(o => o.textContent).join(' + ') || BUTTON_TEXT
                 return
             }
             [..._options]
