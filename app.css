@@ -56,6 +56,9 @@ body {
   border-radius: 4px;
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
 }
+.selectpicker[dropup] .options {
+  bottom: 30px;
+}
 
 .selectpicker .options input.search {
   width: 85%;
@@ -84,11 +87,21 @@ body {
 .selectpicker .options :is(option, .option):not(.selected):hover {
   background-color: #d0d5dd2e;
 }
- :is(option, .option).selected {
+:is(option, .option).selected {
   background-color: #24a0ed;
   color: #fff;
 }
-.selectpicker[show-ticks] :is(option, .options).selected::after,
+
+body .selectpicker .options option[divider] {
+  height: 0;
+  margin: 0.5rem 0;
+  font-size: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-top: 1px solid #ccc;
+  padding: 0;
+}
+.selectpicker[show-ticks] :is(option, .option).selected::after,
 :is(option, .options).selected_multiple::after {
   --border-color: #222;
   content: "";
@@ -101,7 +114,7 @@ body {
   border-bottom-color: var(----border-color);
   transform: rotate(45deg);
 }
-.selectpicker[show-ticks] :is(option, .options).selected::after {
+.selectpicker[show-ticks] :is(option, .option).selected::after {
   --border-color: #fff;
 }
 
@@ -113,4 +126,10 @@ body {
 
 body .optgroup option {
   padding-left: 15px !important;
+}
+
+.selectpicker [disabled] {
+  opacity: 0.7;
+  pointer-events: none;
+  user-select: none;
 }

@@ -19,7 +19,9 @@ const searchInput = document.createElement("input")
 var selectpicker_obj = {
     setup: function (_element) {
         selectpicker_wrapper.classList.add(SELECTPICKER)
+        this.isDisabled(_element) ? button.setAttribute("disabled", "") : "";
         this.showTicks(_element) ? selectpicker_wrapper.setAttribute("show-ticks", "") : "";
+        this.isDropUp(_element) ? selectpicker_wrapper.setAttribute("dropup", "") : "";
         BUTTON_TEXT = _element.getAttribute("title") ?? BUTTON_TEXT
         button.innerText = BUTTON_TEXT
         selectpicker_wrapper.appendChild(button)
@@ -30,18 +32,18 @@ var selectpicker_obj = {
         this.formatOptions(options.querySelectorAll('option'))
 
         this.selectOption(options.querySelectorAll('option,.option'), _element, this.hasMultiple(_element), this.maxValue(_element), this.showCount(_element))
-        document.addEventListener('click', this.showOrHideDropDown.bind(this, this.hasMultiple(_element), this.addSearch(_element)))
+        document.querySelector("*:not([disabled])").addEventListener('click', this.showOrHideDropDown.bind(this, this.hasMultiple(_element), this.addSearch(_element)))
     },
     formatHTML: function (html) {
 
         return html.replaceAll(OPTGROP_NODENAME, `div class="optgroup"`)
     },
     showOrHideDropDown: function (showDropdown, hasSearch, e) {
-        if (hasSearch && !showDropdown) {
-            e.composedPath().includes(searchInput) ? options.classList.remove(HIDE) : options.classList.toggle(HIDE)
+        if (hasSearch && !showDropdown && e.composedPath().includes(searchInput)) {
+            e.composedPath().includes(searchInput) ? options.classList.remove(HIDE) : options.classList.add(HIDE)
             return
         }
-        e.composedPath().includes(selectpicker_wrapper) ? options.classList.remove(HIDE) : options.classList.toggle(HIDE)
+        e.composedPath().includes(selectpicker_wrapper) ? (showDropdown ? options.classList.remove(HIDE) : options.classList.toggle(HIDE)) : options.classList.add(HIDE)
     },
     formatOptions: function (_options) {
         if (!_options) return
@@ -54,6 +56,8 @@ var selectpicker_obj = {
     },
     hasMultiple: (e) => e.hasAttribute("multiple"),
     maxValue: (e) => e.getAttribute("max"),
+    isDisabled: (e) => e.hasAttribute("disabled"),
+    isDropUp: (e) => e.hasAttribute("dropup"),
     showCount: (e) => e.getAttribute("show-selected-count"),
     showTicks: (e) => e.hasAttribute("show-tick"),
     addSearch: function (e) {
@@ -75,8 +79,7 @@ var selectpicker_obj = {
     selectOption(_options, _element, isMultiple, maxValue, showCount) {
         if (!_options) return
         [..._options].forEach(item => item.addEventListener('click', function () {
-            console.log(this.value,this.dataset.value)
-            _element.value = this.value ?? this.dataset.value.replaceAll("'","")
+            _element.value = this.value ?? this.dataset.value.replaceAll("'", "")
             if (isMultiple) {
 
                 if (maxValue && [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].length >= Number(maxValue)) {
