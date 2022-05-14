@@ -25,14 +25,15 @@ var selectpicker_obj = {
         selectpicker_wrapper.appendChild(button)
         options.className = `${OPTIONS} ${HIDE}`
         options.innerHTML = this.formatHTML(_element.innerHTML)
-
         selectpicker_wrapper.appendChild(options)
         _element.after(selectpicker_wrapper)
+        this.formatOptions(options.querySelectorAll('option'))
 
-        this.selectOption(options.querySelectorAll('option'), _element, this.hasMultiple(_element), this.maxValue(_element), this.showCount(_element))
+        this.selectOption(options.querySelectorAll('option,.option'), _element, this.hasMultiple(_element), this.maxValue(_element), this.showCount(_element))
         document.addEventListener('click', this.showOrHideDropDown.bind(this, this.hasMultiple(_element), this.addSearch(_element)))
     },
     formatHTML: function (html) {
+
         return html.replaceAll(OPTGROP_NODENAME, `div class="optgroup"`)
     },
     showOrHideDropDown: function (showDropdown, hasSearch, e) {
@@ -41,6 +42,15 @@ var selectpicker_obj = {
             return
         }
         e.composedPath().includes(selectpicker_wrapper) ? options.classList.remove(HIDE) : options.classList.toggle(HIDE)
+    },
+    formatOptions: function (_options) {
+        if (!_options) return
+        [..._options].forEach(o => {
+            if (o.dataset.content) {
+                o.outerHTML = `<div data-value=${o.value} class="option">${o.dataset.content}</div>`
+            }
+
+        })
     },
     hasMultiple: (e) => e.hasAttribute("multiple"),
     maxValue: (e) => e.getAttribute("max"),
@@ -65,7 +75,8 @@ var selectpicker_obj = {
     selectOption(_options, _element, isMultiple, maxValue, showCount) {
         if (!_options) return
         [..._options].forEach(item => item.addEventListener('click', function () {
-            _element.value = this.value
+            console.log(this.value,this.dataset.value)
+            _element.value = this.value ?? this.dataset.value.replaceAll("'","")
             if (isMultiple) {
 
                 if (maxValue && [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].length >= Number(maxValue)) {

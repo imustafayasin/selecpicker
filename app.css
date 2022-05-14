@@ -71,26 +71,26 @@ body {
   opacity: 0;
   visibility: hidden;
 }
-.selectpicker .options option {
+.selectpicker .options :is(option, .option) {
   font-size: 12px;
   padding: 5px;
   user-select: none;
   position: relative;
   cursor: pointer;
 }
-.selectpicker .options option:not(:last-child) {
+.selectpicker .options :is(option, .option):not(:last-child) {
   /* border-bottom: 1px solid #D0D5DD; */
 }
-.selectpicker .options option:not(.selected):hover {
+.selectpicker .options :is(option, .option):not(.selected):hover {
   background-color: #d0d5dd2e;
 }
-option.selected {
+ :is(option, .option).selected {
   background-color: #24a0ed;
   color: #fff;
 }
-.selectpicker[show-ticks] option.selected::after,
-option.selected_multiple::after {
-  --border-color:#222;
+.selectpicker[show-ticks] :is(option, .options).selected::after,
+:is(option, .options).selected_multiple::after {
+  --border-color: #222;
   content: "";
   width: 2px;
   position: absolute;
@@ -101,8 +101,8 @@ option.selected_multiple::after {
   border-bottom-color: var(----border-color);
   transform: rotate(45deg);
 }
-.selectpicker[show-ticks] option.selected::after{
-  --border-color:#fff;
+.selectpicker[show-ticks] :is(option, .options).selected::after {
+  --border-color: #fff;
 }
 
 .optgroup::before {
