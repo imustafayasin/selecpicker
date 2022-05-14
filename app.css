@@ -28,21 +28,19 @@ body {
   line-height: 20px;
 }
 .selectpicker button:hover {
-  background-color: #d0d5ddd3;
+  background-color: #f9fafb;
 }
 
 .selectpicker button::after {
   content: "";
   position: absolute;
-  right: 7px;
-  width: 0px;
-  height: 0px;
-  top: 45%;
-  vertical-align: middle;
-  height: 4px;
-  border: 4px solid transparent;
-  border-radius: 2px;
-  border-top-color: #222;
+  right: 10px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid #667085;;
+  border-bottom: 2px solid #667085;;
+  transform: translateY(-55%) rotate(45deg);
 }
 
 .selectpicker .options {
@@ -82,7 +80,7 @@ body {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #344054;
+  color: #101828;
 }
 .selectpicker .options :is(option, .option):not(:last-child) {
   /* border-bottom: 1px solid #D0D5DD; */
