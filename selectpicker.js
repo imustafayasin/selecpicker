@@ -19,6 +19,7 @@ const searchInput = document.createElement("input")
 var selectpicker_obj = {
     setup: function (_element) {
         selectpicker_wrapper.classList.add(SELECTPICKER)
+        this.showTicks(_element) ? selectpicker_wrapper.setAttribute("show-ticks", "") : "";
         BUTTON_TEXT = _element.getAttribute("title") ?? BUTTON_TEXT
         button.innerText = BUTTON_TEXT
         selectpicker_wrapper.appendChild(button)
@@ -44,6 +45,7 @@ var selectpicker_obj = {
     hasMultiple: (e) => e.hasAttribute("multiple"),
     maxValue: (e) => e.getAttribute("max"),
     showCount: (e) => e.getAttribute("show-selected-count"),
+    showTicks: (e) => e.hasAttribute("show-tick"),
     addSearch: function (e) {
         if (!e.hasAttribute("search")) return false
         searchInput.classList.add(SEARCH)

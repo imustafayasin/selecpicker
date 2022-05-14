@@ -88,16 +88,21 @@ option.selected {
   background-color: #24a0ed;
   color: #fff;
 }
+.selectpicker[show-ticks] option.selected::after,
 option.selected_multiple::after {
+  --border-color:#222;
   content: "";
   width: 2px;
   position: absolute;
   right: 8px;
   height: 8px;
   border: 2px solid transparent;
-  border-right-color: #222;
-  border-bottom-color: #222;
+  border-right-color: var(----border-color);
+  border-bottom-color: var(----border-color);
   transform: rotate(45deg);
+}
+.selectpicker[show-ticks] option.selected::after{
+  --border-color:#fff;
 }
 
 .optgroup::before {
