@@ -5,7 +5,7 @@ const HIDE = "hide"
 const OPTGROP_NODENAME = "optgroup"
 const SELECTED = "selected"
 const SELECTED_MULTIPLE = "selected_multiple"
-const BUTTON_TEXT = "Choose an option"
+let BUTTON_TEXT = "Choose an option"
 const SEARCH = "search"
 
 HTMLElement.prototype.selectpicker = function () {
@@ -19,6 +19,7 @@ const searchInput = document.createElement("input")
 var selectpicker_obj = {
     setup: function (_element) {
         selectpicker_wrapper.classList.add(SELECTPICKER)
+        BUTTON_TEXT = _element.getAttribute("title") ?? BUTTON_TEXT
         button.innerText = BUTTON_TEXT
         selectpicker_wrapper.appendChild(button)
         options.className = `${OPTIONS} ${HIDE}`
@@ -63,13 +64,16 @@ var selectpicker_obj = {
         [..._options].forEach(item => item.addEventListener('click', function () {
             _element.value = this.value
             if (isMultiple) {
-                let selectedOptionsElements = [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)];
-                if (maxValue && selectedOptionsElements.length >= Number(maxValue)) {
-                    if (selectedOptionsElements.includes(this)) this.classList.toggle(SELECTED_MULTIPLE);
+
+                if (maxValue && [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].length >= Number(maxValue)) {
+                    if ([...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].includes(this)) {
+                        this.classList.toggle(SELECTED_MULTIPLE);
+                        button.textContent = [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].map(o => o.textContent).join(' + ') || BUTTON_TEXT
+                    }
                     return
                 }
                 this.classList.toggle(SELECTED_MULTIPLE);
-                button.textContent = selectedOptionsElements.map(o => o.textContent).join(' + ') || BUTTON_TEXT
+                button.textContent = [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)].map(o => o.textContent).join(' + ') || BUTTON_TEXT
                 return
             }
             [..._options]
