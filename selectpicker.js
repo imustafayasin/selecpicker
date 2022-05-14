@@ -1,50 +1,78 @@
-const SELECTPICKER = "selectpicker";
-const OPTIONS = "options";
-const HIDE = "hide";
-const OPTGROP_NODENAME = "optgroup";
-const SELECTED = "selected";
+"use strict";
+const SELECTPICKER = "selectpicker"
+const OPTIONS = "options"
+const HIDE = "hide"
+const OPTGROP_NODENAME = "optgroup"
+const SELECTED = "selected"
+const SELECTED_MULTIPLE = "selected_multiple"
 const BUTTON_TEXT = "Choose an option"
+const SEARCH = "search"
 
 HTMLElement.prototype.selectpicker = function () {
-    selectpicker_obj.setup(this);
-};
+    selectpicker_obj.setup(this)
+}
 
 const selectpicker_wrapper = document.createElement('div')
 const button = document.createElement("button")
 const options = document.createElement("div")
+const searchInput = document.createElement("input")
 var selectpicker_obj = {
     setup: function (_element) {
         selectpicker_wrapper.classList.add(SELECTPICKER)
         button.innerText = BUTTON_TEXT
-        selectpicker_wrapper.appendChild(button);
-        options.className = `${OPTIONS} ${HIDE}`;
-        options.innerHTML = this.formatHTML(_element.innerHTML);
+        selectpicker_wrapper.appendChild(button)
+        options.className = `${OPTIONS} ${HIDE}`
+        options.innerHTML = this.formatHTML(_element.innerHTML)
+
         selectpicker_wrapper.appendChild(options)
-        _element.after(selectpicker_wrapper);
-        this.selectOption(options.querySelectorAll('option'), _element, this.isMultiple(_element));
-        document.addEventListener('click', this.showOrHideDropDown.bind(this, this.isMultiple(_element)))
+        _element.after(selectpicker_wrapper)
+
+        this.selectOption(options.querySelectorAll('option'), _element, this.hasMultiple(_element))
+        document.addEventListener('click', this.showOrHideDropDown.bind(this, this.hasMultiple(_element), this.addSearch(_element)))
     },
     formatHTML: function (html) {
         return html.replaceAll(OPTGROP_NODENAME, `div class="optgroup"`)
     },
-    showOrHideDropDown: function (showDropdown, e) {
-        e.composedPath().includes(selectpicker_wrapper) ? (showDropdown ? options.classList.remove(HIDE) : options.classList.toggle(HIDE)) : options.classList.add(HIDE)
+    showOrHideDropDown: function (showDropdown, hasSearch, e) {
+        if (hasSearch && !showDropdown) {
+            e.composedPath().includes(searchInput) ? options.classList.remove(HIDE) : options.classList.toggle(HIDE)
+            return
+        }
+        e.composedPath().includes(selectpicker_wrapper) ? options.classList.remove(HIDE) : options.classList.toggle(HIDE)
     },
-    isMultiple: (e) => e.hasAttribute("multiple"),
+    hasMultiple: (e) => e.hasAttribute("multiple"),
+
+    addSearch: function (e) {
+        if (!e.hasAttribute("search")) return false
+        searchInput.classList.add(SEARCH)
+        document.addEventListener('input', b => {
+            if (b.composedPath().includes(document.querySelector(`.${SEARCH}`)))
+                this.handleSearch(b)
+        })
+        options.prepend(searchInput);
+        return true
+    },
+    handleSearch: function (e) {
+        e?.target?.value || options.querySelectorAll('option').forEach(o => o.removeAttribute("hidden"))
+        if (e?.target?.value == null) return;
+        options.querySelectorAll('option').forEach(o => { if (!o.innerText.toLowerCase().includes(e.target.value.toLowerCase())) o.setAttribute("hidden", "") })
+        console.log(options.querySelectorAll('option'), e.target.value)
+    },
     selectOption(_options, _element, isMultiple) {
-        if (!_options) return;
+        if (!_options) return
         [..._options].forEach(item => item.addEventListener('click', function () {
-            _element.value = this.value;
+            _element.value = this.value
             if (isMultiple) {
-                this.classList.toggle(SELECTED);
+                this.classList.toggle(SELECTED_MULTIPLE)
                 button.textContent = [...options.querySelectorAll('.selected')].map(o => o.textContent).join(' + ') || BUTTON_TEXT
                 return
             }
             [..._options]
                 .find(t => t.classList.contains(SELECTED))?.classList.remove(SELECTED)
-            this.classList.add(SELECTED);
-            button.textContent = this.textContent
-        }));
+            this.classList.add(SELECTED)
+            button.textContent = this.textContent;
+
+        }))
     }
 
 }

@@ -1,89 +1,110 @@
-html,body{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.473);
-    gap: 10px;
-    font-family: "Arial",sans-serif;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.473);
+  gap: 10px;
+  font-family: "Arial", sans-serif;
 }
-.selectpicker{
-position: relative;
+.selectpicker {
+  position: relative;
 }
-.selectpicker button{
-    min-width: 120px;
-    font-size: 12px;
-    outline: 0;
-    border: 1px solid ;
-    border-radius: 2px;
-    background-color: #fff;
-    text-align: left;
-    background: #FFFFFF;
-    border: 1px solid #D0D5DD;
-    padding: 5px 10px;
-    padding-right: 20px;
-    box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-    border-radius: 4px;
-    position: relative;
-    cursor: pointer;
+.selectpicker button {
+  min-width: 120px;
+  font-size: 12px;
+  outline: 0;
+  border: 1px solid;
+  border-radius: 2px;
+  background-color: #fff;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  padding: 5px 10px;
+  padding-right: 20px;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
 }
-.selectpicker button:hover{
-    background-color:#d0d5ddd3;
-}
-
-.selectpicker button::after{
-    content: '';
-    position: absolute;
-    right: 7px;
-    width:0px;
-    height: 0px;
-    top:45%;
-    vertical-align: middle;
-    height: 4px;
-    border:4px solid transparent;
-    border-radius: 2px;
-    border-top-color: #222;
-
+.selectpicker button:hover {
+  background-color: #d0d5ddd3;
 }
 
-
-.selectpicker .options{
-    background-color: #fff;
-    border:1px solid #D0D5DD;
-    position: absolute;
-    width: 100%;
-    margin-top: 4px;
-    border-radius: 4px;
-    box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-}
-.selectpicker .options.hide{
-    height: 1px;
-    opacity: 0;
-    visibility: hidden;
-}
-.selectpicker .options option{
-    font-size: 12px;
-    padding: 5px;
-    cursor: pointer;
-}
-.selectpicker .options option:not(:last-child){
-    /* border-bottom: 1px solid #D0D5DD; */
-}
-.selectpicker .options option:not(.selected):hover{
-    background-color:#d0d5dd2e;
-}
-option.selected{
-    background-color: #24a0ed;
-    color: #fff;
+.selectpicker button::after {
+  content: "";
+  position: absolute;
+  right: 7px;
+  width: 0px;
+  height: 0px;
+  top: 45%;
+  vertical-align: middle;
+  height: 4px;
+  border: 4px solid transparent;
+  border-radius: 2px;
+  border-top-color: #222;
 }
 
-.optgroup::before{
-    content:attr(label);
-    font-size: 9px;
-    padding-left: 10px;
+.selectpicker .options {
+  background-color: #fff;
+  border: 1px solid #d0d5dd;
+  position: absolute;
+  width: 100%;
+  margin-top: 4px;
+  border-radius: 4px;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
 }
 
-body .optgroup option{
-    padding-left:15px !important;
+.selectpicker .options input.search {
+  width: 85%;
+  border: 1px solid;
+  display: block;
+  margin: 5px auto;
+  border-radius: 2px;
+  padding: 5px;
+}
+
+.selectpicker .options.hide {
+  height: 1px;
+  opacity: 0;
+  visibility: hidden;
+}
+.selectpicker .options option {
+  font-size: 12px;
+  padding: 5px;
+  position: relative;
+  cursor: pointer;
+}
+.selectpicker .options option:not(:last-child) {
+  /* border-bottom: 1px solid #D0D5DD; */
+}
+.selectpicker .options option:not(.selected):hover {
+  background-color: #d0d5dd2e;
+}
+option.selected {
+  background-color: #24a0ed;
+  color: #fff;
+}
+option.selected_multiple::after {
+  content: "";
+  width: 2px;
+  position: absolute;
+  right: 8px;
+  height: 8px;
+  border: 2px solid transparent;
+  border-right-color: #222;
+  border-bottom-color: #222;
+  transform: rotate(45deg);
+}
+
+.optgroup::before {
+  content: attr(label);
+  font-size: 9px;
+  padding-left: 10px;
+}
+
+body .optgroup option {
+  padding-left: 15px !important;
 }
