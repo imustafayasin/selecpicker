@@ -74,6 +74,7 @@ body {
 .selectpicker .options option {
   font-size: 12px;
   padding: 5px;
+  user-select: none;
   position: relative;
   cursor: pointer;
 }

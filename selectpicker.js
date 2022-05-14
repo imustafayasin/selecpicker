@@ -27,7 +27,7 @@ var selectpicker_obj = {
         selectpicker_wrapper.appendChild(options)
         _element.after(selectpicker_wrapper)
 
-        this.selectOption(options.querySelectorAll('option'), _element, this.hasMultiple(_element))
+        this.selectOption(options.querySelectorAll('option'), _element, this.hasMultiple(_element), this.maxValue(_element))
         document.addEventListener('click', this.showOrHideDropDown.bind(this, this.hasMultiple(_element), this.addSearch(_element)))
     },
     formatHTML: function (html) {
@@ -41,7 +41,7 @@ var selectpicker_obj = {
         e.composedPath().includes(selectpicker_wrapper) ? options.classList.remove(HIDE) : options.classList.toggle(HIDE)
     },
     hasMultiple: (e) => e.hasAttribute("multiple"),
-
+    maxValue: (e) => e.getAttribute("max"),
     addSearch: function (e) {
         if (!e.hasAttribute("search")) return false
         searchInput.classList.add(SEARCH)
@@ -58,13 +58,18 @@ var selectpicker_obj = {
         options.querySelectorAll('option').forEach(o => { if (!o.innerText.toLowerCase().includes(e.target.value.toLowerCase())) o.setAttribute("hidden", "") })
         console.log(options.querySelectorAll('option'), e.target.value)
     },
-    selectOption(_options, _element, isMultiple) {
+    selectOption(_options, _element, isMultiple, maxValue) {
         if (!_options) return
         [..._options].forEach(item => item.addEventListener('click', function () {
             _element.value = this.value
             if (isMultiple) {
-                this.classList.toggle(SELECTED_MULTIPLE)
-                button.textContent = [...options.querySelectorAll('.selected')].map(o => o.textContent).join(' + ') || BUTTON_TEXT
+                let selectedOptionsElements = [...options.querySelectorAll(`.${SELECTED_MULTIPLE}`)];
+                if (maxValue && selectedOptionsElements.length >= Number(maxValue)) {
+                    if (selectedOptionsElements.includes(this)) this.classList.toggle(SELECTED_MULTIPLE);
+                    return
+                }
+                this.classList.toggle(SELECTED_MULTIPLE);
+                button.textContent = selectedOptionsElements.map(o => o.textContent).join(' + ') || BUTTON_TEXT
                 return
             }
             [..._options]
