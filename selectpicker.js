@@ -9,7 +9,14 @@ let BUTTON_TEXT = "Choose an option"
 const SEARCH = "search"
 
 HTMLElement.prototype.selectpicker = function () {
-    selectpicker_obj.setup(this)
+    try {
+        selectpicker_obj.setup(this)
+        this.hidden = true
+
+    } catch (error) {
+        console.log(error)
+    }
+
 }
 
 const selectpicker_wrapper = document.createElement('div')
